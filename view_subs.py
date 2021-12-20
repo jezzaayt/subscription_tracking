@@ -22,7 +22,7 @@ popup.maxsize(2020,2000)
 title_label = ttk.Label(popup, text="View Last Subscriptions", bootstyle="info", font=("",35))
 title_label.pack()
 
-columns = ("Start Date","End Date","Total Sub",  "Badge", "Channel",  "User Gifted","URL", "ID")
+columns = ("Start Date","End Date","Total Sub",  "Channel",  "URL", "ID")
 sb = ttk.Scrollbar(popup, orient=ttk.VERTICAL)
 sb.pack( side=RIGHT, fill=BOTH)
 
@@ -31,9 +31,9 @@ tree = ttk.Treeview(popup, height = 10, columns=columns, show="headings", bootst
 tree.column("Start Date",  anchor=CENTER, minwidth=150)
 tree.column("End Date",  anchor=CENTER, minwidth=150)
 tree.column("Channel", anchor=CENTER,  minwidth=150)
-tree.column("Badge",  anchor=CENTER, minwidth=80)
+#tree.column("Badge",  anchor=CENTER, minwidth=80)
 tree.column("Total Sub",  anchor=CENTER, minwidth=200)
-tree.column("User Gifted", anchor=CENTER, minwidth=150)
+#tree.column("User Gifted", anchor=CENTER, minwidth=150)
 tree.column("URL", anchor=CENTER, minwidth=200)
 tree.column("ID", anchor=CENTER, minwidth=50)
 
@@ -89,16 +89,16 @@ def edit_subs():
   total_label.pack()#grid(row=3,column=0)
   total = Entry(edit, width = 30)
   total.pack()#grid(row = 3, column = 1, padx=20)
-  badge_label = Label(edit, text="Badge")
-  badge_label.pack()#grid(row = 4, column = 0)
+  # badge_label = Label(edit, text="Badge")
+  # badge_label.pack()#grid(row = 4, column = 0)
 
-  badge = Entry(edit, width = 30)
-  badge.pack()#grid(row = 4, column = 1, padx=20)
+  # badge = Entry(edit, width = 30)
+  # badge.pack()#grid(row = 4, column = 1, padx=20)
   
-  user_gifted_label = Label(edit, text="User Gifted")
-  user_gifted_label.pack()#grid(row = 5, column = 0)
-  user_gifted = Entry(edit, width = 30)
-  user_gifted.pack()#grid(row = 5, column = 1, padx=20)
+  # user_gifted_label = Label(edit, text="User Gifted")
+  # user_gifted_label.pack()#grid(row = 5, column = 0)
+  # user_gifted = Entry(edit, width = 30)
+  # user_gifted.pack()#grid(row = 5, column = 1, padx=20)
 
   url_label = Label(edit, text="URL")
   url_label.pack()#grid(row = 5, column = 0)
@@ -120,9 +120,9 @@ def edit_subs():
        # edate.insert(0,sub[1])
         channel.insert(0,sub[4])
         total.insert(0,sub[3])
-        badge.insert(0,sub[2])
+        #badge.insert(0,sub[2])
         url.insert(0,sub[6])
-        user_gifted.insert(0,sub[5])
+        #user_gifted.insert(0,sub[5])
         
       # for sub in subs:
       #     print_subs +=  str(sub[3])   + " " + str(sub[4])  + " " + str(sub[5]) + "\n"   
@@ -165,10 +165,10 @@ def edit_subs():
         'start':sdate.get(),
         'end': enddate.date() +  relativedelta(month=+int(len_pick.get())),
         'channel': channel.get(),
-        'badge': badge.get(),
+        #'badge': badge.get(),
         'total': total.get(),
         'url':  url.get(),#"twitch.tv/" + channel.get(),
-        'user_gifted': user_gifted.get(),
+        #'user_gifted': user_gifted.get(),
         'oid': twitch_id
       }
       )
@@ -195,7 +195,7 @@ def query():
     #put data into tree list
     for sub in subs:
       print(sub)
-      tree.insert("",  tkinter.END, values=(sub[0], sub[1], sub[3], sub[2], sub[4], sub[5],sub[6], sub[7]))
+      tree.insert("",  tkinter.END, values=(sub[0], sub[1], sub[3],  sub[4],sub[6], sub[7]))
   
     #sb.grid(row = 1, column=10, sticky="ns")
     tree.config(yscrollcommand=sb.set)

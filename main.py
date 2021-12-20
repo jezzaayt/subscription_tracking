@@ -26,8 +26,8 @@ view_btn = ttk.Button(root, text="View All Subscriptions", command=view_subs, wi
 
 quit_btn = ttk.Button(root, text = "Quit", command=root.quit, width = 30 ).pack()
 
-#hide = win32gui.GetForegroundWindow()
-#win32gui.ShowWindow(hide, win32con.SW_HIDE)
+hide = win32gui.GetForegroundWindow()
+win32gui.ShowWindow(hide, win32con.SW_HIDE)
 
 
 root.mainloop()

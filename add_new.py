@@ -24,15 +24,15 @@ total_label = Label(popup, text = "Total Subscriptions")
 total_label.grid(row=2,column=0)
 
 
-badge = Entry(popup, width = 30)
-badge.grid(row = 3, column = 1, padx=20)
-badge_label = Label(popup, text="Badge")
-badge_label.grid(row = 3, column = 0)
+# badge = Entry(popup, width = 30)
+# badge.grid(row = 3, column = 1, padx=20)
+# badge_label = Label(popup, text="Badge")
+# badge_label.grid(row = 3, column = 0)
 
-user_gifted = Entry(popup, width = 30)
-user_gifted.grid(row = 4, column = 1, padx=20)
-user_gifted_label = Label(popup, text="User Gifted")
-user_gifted_label.grid(row = 4, column = 0)
+# user_gifted = Entry(popup, width = 30)
+# user_gifted.grid(row = 4, column = 1, padx=20)
+# user_gifted_label = Label(popup, text="User Gifted")
+# user_gifted_label.grid(row = 4, column = 0)
 
 url_label = Label(popup, text="URL")
 url_label.grid(row = 5, column = 0)
@@ -51,18 +51,18 @@ def add_listing():
     c.execute("INSERT INTO subs VALUES (:start_date, :end_date, :badge, :total_sub, :channel, :user_gifted, :url)",{
             'start_date':  today,
             'end_date':today+relativedelta(month=+int(len_pick.get())),
-            'badge': badge.get(),
+            #'badge': badge.get(),
             'total_sub': total.get(),
             'channel': channel.get(),
-            'user_gifted': user_gifted.get(),
+            #'user_gifted': user_gifted.get(),
             'url': url.get()#"twitch.tv/" + channel.get()
         })
     conn.commit()
     conn.close()
-    badge.delete(0,END)
+    #badge.delete(0,END)
     total.delete(0,END)
     channel.delete(0,END)
-    user_gifted.delete(0,END)
+    #user_gifted.delete(0,END)
     popup.quit()
 
 
