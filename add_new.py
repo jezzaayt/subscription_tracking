@@ -5,7 +5,7 @@ from dateutil.relativedelta import relativedelta
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import SUCCESS
 from ttkbootstrap.style import Bootstyle
-popup = ttk.Window(themename="cyborg")
+popup = ttk.Window(themename="morph")
 today = date.today()
 popup.title("New Subscription")
 

@@ -14,7 +14,7 @@ from tkinter.messagebox import showinfo
 from functools import partial
 
 from ttkbootstrap.widgets import DateEntry
-popup = ttk.Window(themename="cyborg")
+popup = ttk.Window(themename="morph")
 today = date.today()
 popup.title("View Subscriptions")
 popup.minsize(1720,680)

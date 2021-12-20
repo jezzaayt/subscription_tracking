@@ -15,7 +15,7 @@ def new_sub():
 
 def view_subs():
   os.system("view_subs.py")
-root = ttk.Window(themename="cyborg")
+root = ttk.Window(themename="morph")
 root.title("Twitch Manual Subscription Tracker")
 
 add_btn = ttk.Button(root, text="New Sub", command=new_sub, width = 30, bootstyle=SUCCESS )
