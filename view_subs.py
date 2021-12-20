@@ -22,7 +22,7 @@ popup.maxsize(2020,2000)
 title_label = ttk.Label(popup, text="View Last Subscriptions", bootstyle="info", font=("",35))
 title_label.pack()
 
-columns = ("Start Date","End Date","Total Sub",  "Channel",  "URL", "ID")
+columns = ("ID", "Start Date","End Date","Total Subscription Length",  "Channel",  "URL")
 sb = ttk.Scrollbar(popup, orient=ttk.VERTICAL)
 sb.pack( side=RIGHT, fill=BOTH)
 
@@ -32,7 +32,7 @@ tree.column("Start Date",  anchor=CENTER, minwidth=150)
 tree.column("End Date",  anchor=CENTER, minwidth=150)
 tree.column("Channel", anchor=CENTER,  minwidth=150)
 #tree.column("Badge",  anchor=CENTER, minwidth=80)
-tree.column("Total Sub",  anchor=CENTER, minwidth=200)
+tree.column("Total Subscription Length",  anchor=CENTER, minwidth=300)
 #tree.column("User Gifted", anchor=CENTER, minwidth=150)
 tree.column("URL", anchor=CENTER, minwidth=200)
 tree.column("ID", anchor=CENTER, minwidth=50)
@@ -195,7 +195,7 @@ def query():
     #put data into tree list
     for sub in subs:
       print(sub)
-      tree.insert("",  tkinter.END, values=(sub[0], sub[1], sub[3],  sub[4],sub[6], sub[7]))
+      tree.insert("",  tkinter.END, values=(sub[7], sub[0], sub[1], sub[3],  sub[4],sub[6]))
   
     #sb.grid(row = 1, column=10, sticky="ns")
     tree.config(yscrollcommand=sb.set)
