@@ -3,6 +3,7 @@ from sqlite3.dbapi2 import connect
 from tkinter import * 
 from datetime import date, datetime, timedelta
 import tkinter
+from numpy import timedelta64
 import ttkbootstrap as ttk
 from ttkbootstrap import window
 from ttkbootstrap.constants import *
@@ -80,7 +81,7 @@ def edit_subs():
   len_pick.pack()
 
 
-  channel_label = Label(edit, text="Channel")
+  channel_label = Label(edit, text="Service")
   channel_label.pack()#grid(row = 2, column = 0)
   channel = Entry(edit, width = 30)
   channel.pack()#.grid(row=2, column = 1)
@@ -89,16 +90,16 @@ def edit_subs():
   total_label.pack()#grid(row=3,column=0)
   total = Entry(edit, width = 30)
   total.pack()#grid(row = 3, column = 1, padx=20)
-  # badge_label = Label(edit, text="Badge")
-  # badge_label.pack()#grid(row = 4, column = 0)
+  badge_label = Label(edit, text="Badge")
+  badge_label.pack()#grid(row = 4, column = 0)
 
-  # badge = Entry(edit, width = 30)
-  # badge.pack()#grid(row = 4, column = 1, padx=20)
+  badge = Entry(edit, width = 30)
+  badge.pack()#grid(row = 4, column = 1, padx=20)
   
-  # user_gifted_label = Label(edit, text="User Gifted")
-  # user_gifted_label.pack()#grid(row = 5, column = 0)
-  # user_gifted = Entry(edit, width = 30)
-  # user_gifted.pack()#grid(row = 5, column = 1, padx=20)
+  user_gifted_label = Label(edit, text="User Gifted")
+  user_gifted_label.pack()#grid(row = 5, column = 0)
+  user_gifted = Entry(edit, width = 30)
+  user_gifted.pack()#grid(row = 5, column = 1, padx=20)
 
   url_label = Label(edit, text="URL")
   url_label.pack()#grid(row = 5, column = 0)
@@ -120,9 +121,9 @@ def edit_subs():
        # edate.insert(0,sub[1])
         channel.insert(0,sub[4])
         total.insert(0,sub[3])
-        #badge.insert(0,sub[2])
+        badge.insert(0,sub[2])
         url.insert(0,sub[6])
-        #user_gifted.insert(0,sub[5])
+        user_gifted.insert(0,sub[5])
         
       # for sub in subs:
       #     print_subs +=  str(sub[3])   + " " + str(sub[4])  + " " + str(sub[5]) + "\n"   
@@ -132,6 +133,7 @@ def edit_subs():
 
       conn.commit()
       conn.close()
+      
 
 
   edit_query()
@@ -146,11 +148,18 @@ def edit_subs():
       conn = sqlite3.connect("subs.db")
       c = conn.cursor()
       
+      
     #select_text.insert(0,sub[3])
       twitch_id = id#select_text.get()
       enddate = sdate.get()
       enddate = datetime.strptime(enddate, "%Y-%m-%d")
-
+      get_new_end = relativedelta(month=int(len_pick.get()))
+      end_new = enddate + get_new_end
+      if end_new.month < enddate.month or end_new.month == enddate.month:
+       
+        end_new = end_new +  relativedelta(year=end_new.year + 1)
+        end_new = end_new.date()
+        
       c.execute("""UPDATE subs SET 
       start_date = :start,
       end_date = :end,
@@ -159,19 +168,20 @@ def edit_subs():
       url = :url,
       total_sub = :total,
       user_gifted = :user_gifted
-    
+      
       WHERE channel = :channel""",
       {
         'start':sdate.get(),
-        'end': enddate.date() +  relativedelta(month=+int(len_pick.get())),
+        'end': end_new,#enddate.date() +  relativedelta(month=int(len_pick.get())),
         'channel': channel.get(),
-        #'badge': badge.get(),
+        'badge': badge.get(),
         'total': total.get(),
         'url':  url.get(),#"twitch.tv/" + channel.get(),
-        #'user_gifted': user_gifted.get(),
+        'user_gifted': user_gifted.get(),
         'oid': twitch_id
       }
       )
+      
       conn.commit()
       conn.close()
       edit.destroy()
