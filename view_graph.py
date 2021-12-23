@@ -5,6 +5,8 @@ import database as db
 import matplotlib.pyplot as plt
 import sqlite3
 import numpy as np
+import random 
+import decimal
 # graph = ttk.Window(themename="morph")
 
      
@@ -23,26 +25,37 @@ query()
 sub_length = []
 channels = []
 spacing = 0.200
+type = []
 def plot():
     for sub in subs:
         print(sub)
         length = sub[3]
         sub_length.append(sub[3])
         channels.append(sub[4])
+        type.append(sub[7])
         print(length)
        # plt.hist(sub)
-    
+    plt.figure(num="Subscriptions Graph")
+    rand = decimal.Decimal(random.randrange(2,5))/10
     mean = [np.mean(sub_length)]*len(sub_length)    
-    plt.bar(channels, sub_length)
+    bar = plt.bar(channels, sub_length)
     plt.title("Subscriptions and Subscription length")
     plt.xlabel("Subscription Channels")
     plt.ylabel("Length (Months)")
     #plt.xticks(np.arange(0, len(sub_length)+5, 1))
+    def autolabel(rects):
+        for idx, rect in enumerate(bar):
+            height = rect.get_height()
+            plt.text(rect.get_x() + rect.get_width()/2, rand*height,
+            type[idx],
+            ha="center", va="bottom", rotation=90)
+    autolabel(bar)
     plt.xticks( fontsize=8)
     plt.plot(channels, mean, color = "red")
     #plt.tick_params(axis="x", which="major",pad= 20)
+    
     plt.show()
-    print(mean) 
+    #print(mean) 
     
 
 
