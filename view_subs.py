@@ -1,8 +1,9 @@
 import sqlite3
-from sqlite3.dbapi2 import connect
+from sqlite3.dbapi2 import SQLITE_DROP_VTABLE, connect
 from tkinter import * 
 from datetime import date, datetime, timedelta
 import tkinter
+from tkinter.ttk import Combobox
 from numpy import right_shift, timedelta64
 import ttkbootstrap as ttk
 from ttkbootstrap import window
@@ -61,7 +62,7 @@ id = "1"
 def edit_subs():
   edit = ttk.Toplevel()
   edit.title("Edit Subscriptions")
-
+  sites = ("Twitch", "YouTube", "Streaming Services", "Other")
   title_label = ttk.Label(edit, text="Edit Subscriptions", bootstyle="info", font=(15))
   title_label.pack()#.grid(row = 0, columnspan=2)
 
@@ -69,38 +70,88 @@ def edit_subs():
   sdate_label.pack()
   sdate= Entry(edit,width=30)
   sdate.pack()#grid(row=1, column = 1)
-
+  
   # edate_label = Label(edit, text="End Date")
   # edate_label.pack()
   # edate = Entry(edit, width=30)
   # edate.pack()
-
+  lengths = (1,3,6,12)
   
   len_label = Label(edit, text="Subscription Length")
   len_label.pack()
-  len_pick = Spinbox(edit, width=30, values=(1,3,6,12))
+  len_pick = Spinbox(edit, width=30, values=lengths)
   len_pick.pack()
 
 
+  
   channel_label = Label(edit, text="Service")
   channel_label.pack()#grid(row = 2, column = 0)
   channel = Entry(edit, width = 30)
   channel.pack()#.grid(row=2, column = 1)
+  services_label = Label(edit, text="Type of Service:")
+  services_label.pack()
+  services = Combobox(edit, width=30, values=sites, textvariable=sites)
+  services["state"] = "readonly"
+  #services.current(0)
+  services.pack()
 
   total_label = Label(edit, text = "Total Subscriptions")
   total_label.pack()#grid(row=3,column=0)
   total = Entry(edit, width = 30)
   total.pack()#grid(row = 3, column = 1, padx=20)
+
+  
   badge_label = Label(edit, text="Badge")
   badge_label.pack()#grid(row = 4, column = 0)
-
   badge = Entry(edit, width = 30)
   badge.pack()#grid(row = 4, column = 1, padx=20)
+  
   
   user_gifted_label = Label(edit, text="User Gifted")
   user_gifted_label.pack()#grid(row = 5, column = 0)
   user_gifted = Entry(edit, width = 30)
   user_gifted.pack()#grid(row = 5, column = 1, padx=20)
+  global service 
+  def checkType():
+    service = services.get()
+    if service != "Twitch":
+      badge_label.forget()
+      badge.forget()
+      user_gifted.forget()
+      user_gifted_label.forget()
+    else:
+      badge_label.pack()
+      badge.pack()
+      user_gifted_label.pack()
+      user_gifted.pack()
+      url_label.forget()
+      url_label.pack()
+      url.forget()
+      url.pack()
+      Update_window.forget()
+      Update_window.pack(side=LEFT)
+      close_window.forget()
+      close_window.pack(side=RIGHT)
+
+
+
+  def callback(event):
+    print("Changed")
+    print(event)
+    print("T")
+    print(services.get())
+    checkType()
+
+
+    
+
+
+
+
+
+
+ 
+ 
 
   url_label = Label(edit, text="URL")
   url_label.pack()#grid(row = 5, column = 0)
@@ -125,13 +176,17 @@ def edit_subs():
         badge.insert(0,sub[2])
         url.insert(0,sub[6])
         user_gifted.insert(0,sub[5])
-        
+        services.insert(0,sub[7])
+        print("TEST")
+        services.set(sub[7])
+        services.insert(0,sub[7])
+        print(sub[7])
       # for sub in subs:
       #     print_subs +=  str(sub[3])   + " " + str(sub[4])  + " " + str(sub[5]) + "\n"   
 
       #query_label = Label(edit, text=print_subs)
      # query_label.grid(row = 3, columnspan = 2)
-
+      
       conn.commit()
       conn.close()
       
@@ -139,7 +194,7 @@ def edit_subs():
 
   edit_query()
 
-  
+  services.bind("<<ComboboxSelected>>", callback)
   def edit_end():
       edit.destroy()
 
@@ -168,7 +223,8 @@ def edit_subs():
       badge = :badge,
       url = :url,
       total_sub = :total,
-      user_gifted = :user_gifted
+      user_gifted = :user_gifted,
+      service = :service
       
       WHERE channel = :channel""",
       {
@@ -179,7 +235,8 @@ def edit_subs():
         'total': total.get(),
         'url':  url.get(),#"twitch.tv/" + channel.get(),
         'user_gifted': user_gifted.get(),
-        'oid': twitch_id
+        'oid': twitch_id,
+        'service': services.get()
       }
       )
       
@@ -191,6 +248,7 @@ def edit_subs():
 
   close_window = ttk.Button(edit, text="Close", command=edit_end)
   close_window.pack(side=RIGHT)
+  checkType()
 def query():
     #connect to db 
     conn = sqlite3.connect("subs.db")
@@ -206,7 +264,7 @@ def query():
     #put data into tree list
     for sub in subs:
       print(sub)
-      tree.insert("",  tkinter.END, values=(sub[7], sub[0], sub[1], sub[3],  sub[4],sub[6]))
+      tree.insert("",  tkinter.END, values=(sub[8], sub[0], sub[1], sub[3],  sub[4],sub[6]))
   
     #sb.grid(row = 1, column=10, sticky="ns")
     tree.config(yscrollcommand=sb.set)
