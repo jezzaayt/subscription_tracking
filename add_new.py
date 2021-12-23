@@ -30,7 +30,7 @@ services.grid(row=2, column=1)
 
 
 total = Entry(popup, width = 30)
-total.grid(row = 3, column = 1, padx=20)
+total.grid(row = 3, column = 1, padx=10)
 total_label = Label(popup, text = "Total Subscriptions")
 total_label.grid(row=3,column=0)
 def callback(event):

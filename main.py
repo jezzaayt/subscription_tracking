@@ -21,7 +21,7 @@ def view_graph():
   graph.plot()
 root = ttk.Window(themename="morph")
 root.title("Twitch Manual Subscription Tracker")
-
+root.geometry("400x183")
 add_btn = ttk.Button(root, text="New Sub", command=new_sub, width = 30, bootstyle=SUCCESS )
 add_btn.pack()
 
