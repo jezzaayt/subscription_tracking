@@ -136,10 +136,6 @@ def edit_subs():
 
 
   def callback(event):
-    print("Changed")
-    print(event)
-    print("T")
-    print(services.get())
     checkType()
 
 
@@ -177,15 +173,8 @@ def edit_subs():
         url.insert(0,sub[6])
         user_gifted.insert(0,sub[5])
         services.insert(0,sub[7])
-        print("TEST")
         services.set(sub[7])
         services.insert(0,sub[7])
-        print(sub[7])
-      # for sub in subs:
-      #     print_subs +=  str(sub[3])   + " " + str(sub[4])  + " " + str(sub[5]) + "\n"   
-
-      #query_label = Label(edit, text=print_subs)
-     # query_label.grid(row = 3, columnspan = 2)
       
       conn.commit()
       conn.close()
