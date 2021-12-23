@@ -3,7 +3,7 @@ from sqlite3.dbapi2 import connect
 from tkinter import * 
 from datetime import date, datetime, timedelta
 import tkinter
-from numpy import timedelta64
+from numpy import right_shift, timedelta64
 import ttkbootstrap as ttk
 from ttkbootstrap import window
 from ttkbootstrap.constants import *
@@ -13,6 +13,7 @@ from dateutil.relativedelta import relativedelta
 from ttkbootstrap.style import Bootstyle
 from tkinter.messagebox import showinfo
 from functools import partial
+import webbrowser
 
 from ttkbootstrap.widgets import DateEntry
 popup = ttk.Window(themename="morph")
@@ -235,6 +236,13 @@ def delete():
     
   query()
 
+def selectURL():
+    item = tree.selection()
+    for i in item:
+      print(tree.item(i,"values")[5])
+      webbrowser.open(tree.item(i,"values")[5])
+
+
 
 select_label  =ttk.Label(popup, text = "Select Name:" )
 select_label.pack()
@@ -242,13 +250,14 @@ select_label.pack()
 select_text = Entry(popup, width = 20)
 #select_text.insert(0, "1")
 select_text.pack()#grid(row=  2,ipadx=0, sticky=S )
+
+go_to_website_btn = ttk.Button(popup,command=selectURL, text="Visit Subscription Website", bootstyle="INFO-outline").pack()
 #select_text.configure(state=tkinter.DISABLED)
-edit_btn = ttk.Button(popup, text="Edit Subscriptions", command=edit_subs, bootstyle=INFO ).pack(side=LEFT)
+edit_btn = ttk.Button(popup, text="Edit Subscriptions", command=edit_subs, bootstyle="info-outline").pack(side=LEFT, fill="both")
+delete_btn = ttk.Button(popup, text="Delete Subscription",command=delete,  bootstyle = "danger-outline").pack(side=RIGHT)#.grid(row = 3, sticky=E)
 
-delete_btn = ttk.Button(popup, text="Delete Subscription",command=delete,  bootstyle = "danger").pack(side=RIGHT)#.grid(row = 3, sticky=E)
 
-
-close_window = ttk.Button(popup, text="Close",  command=popup.quit, bootstyle = "info").pack(side=BOTTOM)
+close_window = ttk.Button(popup, text="Close",  command=popup.quit, bootstyle = "info-outline").pack(side=BOTTOM)
 
 
 
