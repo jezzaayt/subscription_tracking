@@ -219,16 +219,11 @@ def edit_subs():
       conn = sqlite3.connect("subs.db")
       c = conn.cursor()
       lenpicker = int(len_pick.get())
-      print(lenpicker)
       twitch_id = id#select_text.get()
       enddate = sdate.get()
       enddate = datetime.strptime(enddate, "%Y-%m-%d")
       get_new_end = relativedelta(month=lenpicker)
-      print(enddate.month)
-      print(get_new_end.month)
-      print(type(enddate))
-      
-      print(type(get_new_end))
+
       try:
         end_new = enddate + relativedelta(month=enddate.month+get_new_end.month)
       except:
@@ -238,7 +233,7 @@ def edit_subs():
 
       
       end_new = datetime.strftime(end_new, "%Y-%m-%d")
-      print(end_new)
+      #print(end_new)
       c.execute("""UPDATE subs SET 
       start_date = :start,
       end_date = :end,
@@ -273,6 +268,10 @@ def edit_subs():
   close_window.pack(side=RIGHT)
   checkType()
 today = date.today()
+today = str(today)
+def toast(s):
+  msg = "The subscription of: " + s + " has expired today."
+  toaster.show_toast(msg, "", duration=5, threaded=True)
 
 def query():
     #connect to db 
@@ -290,14 +289,16 @@ def query():
     for sub in subs:
       print(sub)
       tree.insert("",  tkinter.END, values=(sub[8], sub[0], sub[1], sub[3],  sub[4],sub[6], sub[7]))
-  
+     
+      if sub[1] == today:
+        print("YES")
+        toast(sub[4])
     #sb.grid(row = 1, column=10, sticky="ns")
     tree.config(yscrollcommand=sb.set)
     conn.commit()
     conn.close()
-    def toast():
-      toaster.show_toast("Test", "test", duration=3, threaded=True)
     #toast()
+
 
 query()
 # 
