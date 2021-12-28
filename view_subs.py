@@ -291,7 +291,6 @@ def query():
       tree.insert("",  tkinter.END, values=(sub[8], sub[0], sub[1], sub[3],  sub[4],sub[6], sub[7]))
      
       if sub[1] == today:
-        print("YES")
         toast(sub[4])
     #sb.grid(row = 1, column=10, sticky="ns")
     tree.config(yscrollcommand=sb.set)
@@ -301,7 +300,6 @@ def query():
 
 
 query()
-# 
 # def moveDown():
 #   item = tree.selection()
 #   for i in reversed(item):

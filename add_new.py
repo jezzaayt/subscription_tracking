@@ -96,7 +96,10 @@ enddate = str(today)
 enddate = datetime.strptime(enddate, "%Y-%m-%d")
 get_new_end = relativedelta(month=int(len_pick.get()))
 end_new = enddate + get_new_end
-if end_new.month < enddate.month or end_new.month == enddate.month:
+try:
+    end_new = enddate + relativedelta(month=enddate.month+get_new_end.month)
+except:
+    end_new = enddate + relativedelta(month=enddate.month-11)
     end_new = end_new +  relativedelta(year=end_new.year + 1)
     end_new = end_new.date()
 
