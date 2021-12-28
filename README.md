@@ -1,4 +1,4 @@
-#  Sub Tracker
+#  Subscription Tracker
 
 I basically built this to learn tkinter see the differences between pack and grid within different windows of this app as well as  improve my SQL skills within Python dev. 
 
