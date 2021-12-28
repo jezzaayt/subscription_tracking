@@ -99,7 +99,7 @@ def edit_subs():
   # edate_label.pack()
   # edate = Entry(edit, width=30)
   # edate.pack()
-  lengths = (0,1,3,6,12)
+  lengths = (1,3,6,12,0)
   
   len_label = Label(edit, text="Subscription Length", font=("", 10))
   len_label.pack()
