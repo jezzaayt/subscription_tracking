@@ -6,7 +6,7 @@ import ttkbootstrap as ttk
 from ttkbootstrap.constants import SUCCESS
 from ttkbootstrap.style import Bootstyle
 from tkinter.ttk import Combobox
-
+from datetime import date, datetime
 popup = ttk.Window(themename="morph")
 today = date.today()
 popup.title("New Subscription")
@@ -56,10 +56,9 @@ def callback(event):
     if service != "Twitch":
         badge_label.grid_forget()
         badge.grid_forget()
-        user_gifted.forget()
-        user_gifted_label.forget()
+        user_gifted.grid_forget()
+        user_gifted_label.grid_forget()
     else:
-        
         badge_label.grid(row = 4, column = 0, padx=20)
         badge.grid(row = 4, column = 1)
         user_gifted_label.grid(row=5, column=0)
@@ -93,6 +92,14 @@ len_label.grid(row = 7, column=0)
 len_pick = Spinbox(popup, width=30, values=(1,3,6,12))
 len_pick.grid(row = 7, column = 1)
 
+enddate = str(today)
+enddate = datetime.strptime(enddate, "%Y-%m-%d")
+get_new_end = relativedelta(month=int(len_pick.get()))
+end_new = enddate + get_new_end
+if end_new.month < enddate.month or end_new.month == enddate.month:
+    end_new = end_new +  relativedelta(year=end_new.year + 1)
+    end_new = end_new.date()
+
 services.bind("<<ComboboxSelected>>", callback)
 def add_listing():
     conn = sqlite3.connect("subs.db")
@@ -100,7 +107,7 @@ def add_listing():
 
     c.execute("INSERT INTO subs VALUES (:start_date, :end_date, :badge, :total_sub, :channel, :user_gifted, :url, :service)",{
             'start_date':  today,
-            'end_date':today+relativedelta(month=+int(len_pick.get())),
+            'end_date':end_new,
             'badge': badge.get(),
             'total_sub': total.get(),
             'channel': channel.get(),
@@ -115,6 +122,7 @@ def add_listing():
     channel.delete(0,END)
     #user_gifted.delete(0,END)
     print(len_pick.get())
+    end()
 
 
 def end():

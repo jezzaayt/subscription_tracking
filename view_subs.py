@@ -102,9 +102,9 @@ def edit_subs():
   
   len_label = Label(edit, text="Subscription Length")
   len_label.pack()
-  len_pick = Spinbox(edit, width=30, values=lengths)
+  len_pick = Spinbox(edit, width=30, values=lengths, state="disabled")
   len_pick.pack()
-
+  
 
   
   channel_label = Label(edit, text="Service")
@@ -218,19 +218,27 @@ def edit_subs():
   def update_query():
       conn = sqlite3.connect("subs.db")
       c = conn.cursor()
-      
-      
-    #select_text.insert(0,sub[3])
+      lenpicker = int(len_pick.get())
+      print(lenpicker)
       twitch_id = id#select_text.get()
       enddate = sdate.get()
       enddate = datetime.strptime(enddate, "%Y-%m-%d")
-      get_new_end = relativedelta(month=int(len_pick.get()))
-      end_new = enddate + get_new_end
-      if end_new.month < enddate.month or end_new.month == enddate.month:
-       
+      get_new_end = relativedelta(month=lenpicker)
+      print(enddate.month)
+      print(get_new_end.month)
+      print(type(enddate))
+      
+      print(type(get_new_end))
+      try:
+        end_new = enddate + relativedelta(month=enddate.month+get_new_end.month)
+      except:
+        end_new = enddate + relativedelta(month=enddate.month-11)
         end_new = end_new +  relativedelta(year=end_new.year + 1)
         end_new = end_new.date()
-        
+
+      
+      end_new = datetime.strftime(end_new, "%Y-%m-%d")
+      print(end_new)
       c.execute("""UPDATE subs SET 
       start_date = :start,
       end_date = :end,
@@ -264,6 +272,8 @@ def edit_subs():
   close_window = ttk.Button(edit, text="Close", command=edit_end)
   close_window.pack(side=RIGHT)
   checkType()
+today = date.today()
+
 def query():
     #connect to db 
     conn = sqlite3.connect("subs.db")
@@ -283,9 +293,11 @@ def query():
   
     #sb.grid(row = 1, column=10, sticky="ns")
     tree.config(yscrollcommand=sb.set)
-
     conn.commit()
     conn.close()
+    def toast():
+      toaster.show_toast("Test", "test", duration=3, threaded=True)
+    #toast()
 
 query()
 # 
