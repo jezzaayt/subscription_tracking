@@ -15,8 +15,10 @@ from ttkbootstrap.style import Bootstyle
 from tkinter.messagebox import showinfo
 from functools import partial
 import webbrowser
-
+from win10toast import ToastNotifier
 from ttkbootstrap.widgets import DateEntry
+
+toaster = ToastNotifier()
 popup = ttk.Window(themename="morph")
 today = date.today()
 popup.title("View Subscriptions")
@@ -59,11 +61,31 @@ id = "1"
 #     showinfo(title="Information", message=",".join(sub))
 
 #tree.bind("<<TreeviewSelect>>", tree_select)
+sites = []
+def get_serives():
+    #connect to db 
+    conn = sqlite3.connect("subs.db")
+    c = conn.cursor()
+    #select all
+    c.execute ("SELECT *, oid FROM SERVICES")
+    services = c.fetchall()
+    for s in services:
+      #print(s)      
+      sites.append(s[0]) 
+   #print(sites)
+
+    conn.commit()
+    conn.close()
+
+  
+
 
 def edit_subs():
+  get_serives()
   edit = ttk.Toplevel()
   edit.title("Edit Subscriptions")
-  sites = ("Twitch", "YouTube", "Streaming Services", "Other")
+  #sites = ("Twitch", "YouTube", "Streaming Services", "Other")
+  print(sites)
   title_label = ttk.Label(edit, text="Edit Subscriptions", bootstyle="info", font=(15))
   title_label.pack()#.grid(row = 0, columnspan=2)
 
@@ -112,6 +134,9 @@ def edit_subs():
   user_gifted_label.pack()#grid(row = 5, column = 0)
   user_gifted = Entry(edit, width = 30)
   user_gifted.pack()#grid(row = 5, column = 1, padx=20)
+
+
+
   global service 
   def checkType():
     service = services.get()
@@ -306,6 +331,7 @@ delete_btn = ttk.Button(popup, text="Delete Subscription",command=delete,  boots
 
 
 close_window = ttk.Button(popup, text="Close",  command=popup.quit, bootstyle = "info-outline").pack(side=BOTTOM)
+
 
 
 

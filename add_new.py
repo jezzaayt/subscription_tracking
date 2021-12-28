@@ -10,10 +10,24 @@ from tkinter.ttk import Combobox
 popup = ttk.Window(themename="morph")
 today = date.today()
 popup.title("New Subscription")
+sites = []
+def get_serives():
+    #connect to db 
+    conn = sqlite3.connect("subs.db")
+    c = conn.cursor()
+    #select all
+    c.execute ("SELECT *, oid FROM SERVICES")
+    services = c.fetchall()
+    for s in services:
+      #print(s)      
+      sites.append(s[0]) 
+   #print(sites)
 
-sites = ("Twitch", "YouTube", "Streaming Services", "Other")
+    conn.commit()
+    conn.close()
 
-title_label = ttk.Label(popup, text="Add New Subscription", bootstyle="info", font=(15))
+get_serives()
+title_label = ttk.Label(popup, text="Add New Subscription", bootstyle="info", font=("",15))
 title_label.grid(row = 0, columnspan=2)
 
 channel = Entry(popup, width = 30)

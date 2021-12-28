@@ -1,0 +1,6 @@
+matplotlib==3.5.1
+numpy==1.21.5
+python_dateutil==2.8.2
+pywin32==302
+ttkbootstrap==1.0.0
+win32gui==221.6
