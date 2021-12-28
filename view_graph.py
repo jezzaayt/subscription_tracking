@@ -7,7 +7,6 @@ import sqlite3
 import numpy as np
 import random 
 import decimal
-# graph = ttk.Window(themename="morph")
 
      
 def query():
@@ -15,10 +14,9 @@ def query():
     conn = sqlite3.connect("subs.db")
     c = conn.cursor()
     #select all
-    c.execute ("SELECT *, oid FROM subs ORDER BY End_date DESC")
+    c.execute ("SELECT *, oid FROM subs")
     global subs
     subs = c.fetchall()
-      #tree.insert("",  tkinter.END, values=(sub[7], sub[0], sub[1], sub[3],  sub[4],sub[6]))
     conn.commit()
     conn.close()
 query()
