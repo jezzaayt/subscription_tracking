@@ -3,6 +3,7 @@ from sqlite3.dbapi2 import SQLITE_DROP_VTABLE, connect
 from tkinter import * 
 from datetime import date, datetime, timedelta
 import tkinter
+from tkinter import font
 from tkinter.ttk import Combobox
 from numpy import right_shift, timedelta64
 import ttkbootstrap as ttk
@@ -86,7 +87,7 @@ def edit_subs():
   edit.title("Edit Subscriptions")
   #sites = ("Twitch", "YouTube", "Streaming Services", "Other")
   print(sites)
-  title_label = ttk.Label(edit, text="Edit Subscriptions", bootstyle="info", font=(15))
+  title_label = ttk.Label(edit, text="Edit Subscriptions", bootstyle="info", font=("",15))
   title_label.pack()#.grid(row = 0, columnspan=2)
 
   sdate_label = Label(edit, text = "Start Date")#.grid(row = 1, column = 0)
@@ -98,12 +99,22 @@ def edit_subs():
   # edate_label.pack()
   # edate = Entry(edit, width=30)
   # edate.pack()
-  lengths = (1,3,6,12)
+  lengths = (0,1,3,6,12)
   
-  len_label = Label(edit, text="Subscription Length")
+  len_label = Label(edit, text="Subscription Length", font=("", 10))
   len_label.pack()
+    
+  len_label_month = Label(edit, text="Years")
+  len_label_month.pack()
+  len_years = Spinbox(edit, width=30, values=(0,1,2,3,4,5,6,7,8,9))
+  len_years.pack()
+
+  len_label_months = Label(edit, text="Months")
+  len_label_months.pack()
   len_pick = Spinbox(edit, width=30, values=lengths, state="disabled")
   len_pick.pack()
+
+
   
 
   
@@ -219,19 +230,25 @@ def edit_subs():
       conn = sqlite3.connect("subs.db")
       c = conn.cursor()
       lenpicker = int(len_pick.get())
+      get_new_end_year = relativedelta(year=int(len_years.get()))
       twitch_id = id#select_text.get()
       enddate = sdate.get()
       enddate = datetime.strptime(enddate, "%Y-%m-%d")
       get_new_end = relativedelta(month=lenpicker)
 
+      end_new = enddate + get_new_end  + get_new_end_year
       try:
-        end_new = enddate + relativedelta(month=enddate.month+get_new_end.month)
+          print("T")
+          end_new = enddate  + relativedelta(month=enddate.month+get_new_end.month)
+          end_new = enddate+ relativedelta(year=+enddate.year + get_new_end_year.year)
+          print(end_new)
       except:
-        end_new = enddate + relativedelta(month=enddate.month-11)
-        end_new = end_new +  relativedelta(year=end_new.year + 1)
-        end_new = end_new.date()
-
-      
+          print("E")
+          end_new = enddate + relativedelta(month=enddate.month-11)
+          end_new = end_new +  relativedelta(year=end_new.year + 1)
+          end_new = end_new +relativedelta(year=end_new.year + get_new_end_year.year)
+          end_new = end_new.date()
+          print(end_new)
       end_new = datetime.strftime(end_new, "%Y-%m-%d")
       #print(end_new)
       c.execute("""UPDATE subs SET 

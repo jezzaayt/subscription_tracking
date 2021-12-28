@@ -1,6 +1,8 @@
+from os import getenv
 import sqlite3
 from tkinter import * 
 from datetime import date, timedelta
+from tkinter import font
 from dateutil.relativedelta import relativedelta
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import SUCCESS
@@ -35,8 +37,8 @@ channel.grid(row=1, column = 1)
 channel_label = Label(popup, text="Service")
 channel_label.grid(row = 1, column = 0)
 services_label = Label(popup, text="Type of Service:")
-services_label.grid(row=2, column=0, padx=20)
-services = Combobox(popup, width=30, values=sites, textvariable=sites)
+services_label.grid(row=2, column=0, padx=0)
+services = Combobox(popup, width=20, values=sites, textvariable=sites)
 services["state"] = "readonly"
 services.current(0)
 services.grid(row=2, column=1)
@@ -68,9 +70,9 @@ def callback(event):
         url.forget()
         url.grid(row = 6, column = 1)
         add_btn.forget()
-        add_btn.grid(row = 8, column=0)
+        add_btn.grid(row = 10, column=0)
         close_window.forget()
-        close_window.grid(row=8, column = 1)
+        close_window.grid(row=10, column = 1)
 
 badge = Entry(popup, width = 30)
 badge.grid(row = 4, column = 1, padx=20)
@@ -87,24 +89,46 @@ url_label.grid(row = 6, column = 0)
 url = Entry(popup, width = 30)
 url.grid(row = 6, column = 1)
 
-len_label = Label(popup, text="Subscription Length")
-len_label.grid(row = 7, column=0)
-len_pick = Spinbox(popup, width=30, values=(1,3,6,12))
-len_pick.grid(row = 7, column = 1)
+len_label = Label(popup, text="Subscription Length", font=("",15))
+len_label.grid(row = 7, column=0, columnspan=2)
 
-enddate = str(today)
-enddate = datetime.strptime(enddate, "%Y-%m-%d")
-get_new_end = relativedelta(month=int(len_pick.get()))
-end_new = enddate + get_new_end
-try:
-    end_new = enddate + relativedelta(month=enddate.month+get_new_end.month)
-except:
-    end_new = enddate + relativedelta(month=enddate.month-11)
-    end_new = end_new +  relativedelta(year=end_new.year + 1)
-    end_new = end_new.date()
+len_label_month = Label(popup, text="Months")
+len_label_month.grid(row = 8, column=0)
+len_pick = Spinbox(popup, width=30, values=(0,1,3,6,12))
+len_pick.grid(row = 8, column = 1)
+
+
+
+len_label_month = Label(popup, text="Years")
+len_label_month.grid(row = 9, column=0)
+len_years = Spinbox(popup, width=30, values=(0,1,2,3,4,5,6,7,8,9))
+len_years.grid(row=9, column=1)
+
+
+
 
 services.bind("<<ComboboxSelected>>", callback)
 def add_listing():
+    enddate = str(today)
+    enddate = datetime.strptime(enddate, "%Y-%m-%d")
+    get_new_end_year = relativedelta(year=int(len_years.get()))
+    get_new_end = relativedelta(month=int(len_pick.get()))
+    end_new = enddate + get_new_end  + get_new_end_year
+    try:
+        print("T")
+        end_new = enddate  + relativedelta(month=enddate.month+get_new_end.month)
+        end_new = enddate+ relativedelta(year=+enddate.year + get_new_end_year.year)
+        print(end_new)
+    except:
+        print("E")
+        end_new = enddate + relativedelta(month=enddate.month-11)
+        end_new = end_new +  relativedelta(year=end_new.year + 1)
+        end_new = end_new +relativedelta(year=end_new.year + get_new_end_year.year)
+        end_new = end_new.date()
+        print(end_new)
+    end_new = datetime.strftime(end_new, "%Y-%m-%d")
+
+
     conn = sqlite3.connect("subs.db")
     c = conn.cursor()
 
@@ -132,9 +156,9 @@ def end():
     popup.quit()
     popup.destroy()
 add_btn = ttk.Button(popup, text = "Add Subscription", command=add_listing)
-add_btn.grid(row = 8, column=0)
+add_btn.grid(row = 10, column=0)
 close_window = ttk.Button(popup, text="Close", command=end)
-close_window.grid(row=8, column = 1)
+close_window.grid(row=10, column = 1)
 
 popup.mainloop()
     #print(today + timedelta(days=30))
