@@ -34,8 +34,8 @@ graph_btn = ttk.Button(root, text="View Graph", command=view_graph, width=30, bo
 
 quit_btn = ttk.Button(root, text = "Quit", command=root.quit, width = 30 ).pack()
 
-# hide = win32gui.GetForegroundWindow()
-# win32gui.ShowWindow(hide, win32con.SW_HIDE)
+hide = win32gui.GetForegroundWindow()
+win32gui.ShowWindow(hide, win32con.SW_HIDE)
 
 
 root.mainloop()

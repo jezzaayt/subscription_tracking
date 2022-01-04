@@ -94,7 +94,7 @@ len_label.grid(row = 7, column=0, columnspan=2)
 
 len_label_month = Label(popup, text="Months")
 len_label_month.grid(row = 8, column=0)
-len_pick = Spinbox(popup, width=30, values=(0,1,3,6,12))
+len_pick = Spinbox(popup, width=30, values=(1,3,6,12,0))
 len_pick.grid(row = 8, column = 1)
 
 
