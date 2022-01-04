@@ -116,8 +116,7 @@ def add_listing():
     end_new = enddate + get_new_end  + get_new_end_year
     try:
         print("T")
-        end_new = enddate  + relativedelta(month=enddate.month+get_new_end.month)
-        end_new = enddate+ relativedelta(year=+enddate.year + get_new_end_year.year)
+        end_new = enddate  + relativedelta(month=enddate.month+get_new_end.month) + relativedelta(year=+enddate.year + get_new_end_year.year)
         print(end_new)
     except:
         print("E")
@@ -127,7 +126,7 @@ def add_listing():
         end_new = end_new.date()
         print(end_new)
     end_new = datetime.strftime(end_new, "%Y-%m-%d")
-
+    print(end_new)
 
     conn = sqlite3.connect("subs.db")
     c = conn.cursor()
