@@ -14,7 +14,7 @@ def query():
     conn = sqlite3.connect("subs.db")
     c = conn.cursor()
     #select all
-    c.execute ("SELECT *, oid FROM subs")
+    c.execute ("SELECT *, oid FROM subs ORDER BY total_sub DESC")
     global subs
     subs = c.fetchall()
     conn.commit()
