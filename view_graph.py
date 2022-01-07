@@ -48,8 +48,12 @@ def plot():
     def autolabel(rects):
         for idx, rect in enumerate(bar):
             height = rect.get_height()
+            t = type[idx]
+            s = sub_length[idx]
+            ts = t + " " + str(s) + ""
+            print(ts)
             plt.text(rect.get_x() + rect.get_width()/2, rand*height,
-            type[idx],
+            ts, 
             ha="center", va="bottom", rotation=90)
     autolabel(bar)
     plt.xticks( fontsize=8)
